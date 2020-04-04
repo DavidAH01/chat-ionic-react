@@ -1,0 +1,7 @@
+{
+  "name": "react-chat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
