@@ -1,23 +1,70 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonAlert } from '@ionic/react';
 import './Tab1.css';
 
-const Tab1: React.FC = () => {
+const Tab1: React.FC = (props: any) => {
+  const { history } = props;
+  const contacts = useStoreState(state => state.contacts.list);
+
+  const user = useStoreState(state => state.user.data);
+  const createUser = useStoreActions((actions: any) => actions.user.create);
+
+  const [openUserAlert, setOpenUserAlert] = React.useState(false);
+
+  React.useEffect(() => {
+    if(!user || !user.id){
+      setOpenUserAlert(true)
+    }
+  }, [])
+
+  const renderContacts = () => {
+    return contacts.map((contact: any) => {
+      return (
+        <IonItem key={`contact-${contact.id}`} onClick={(e: any) => {
+          e.preventDefault();
+          history.push(`/chat/${contact.id}`);
+        }}>
+          <IonLabel>
+            <h2>{contact.name}</h2>
+            <h3>{contact.phone}</h3>
+            <p>{contact.website}</p>
+          </IonLabel>
+        </IonItem>
+      )
+    })
+  }
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Contactos</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
+      <IonAlert
+          isOpen={openUserAlert}
+          onDidDismiss={() => setOpenUserAlert(false)}
+          header={'¿Cúal es tu nombre?'}
+          inputs={[
+            {
+              name: 'name',
+              type: 'text',
+              placeholder: 'Escríbelo aquí'
+            },
+          ]}
+          buttons={[
+            {
+              text: 'Guardar',
+              handler: (data) => {
+                createUser({ name: data.name })
+              }
+            }
+          ]}
+        />
+
+        {renderContacts()}
       </IonContent>
     </IonPage>
   );
