@@ -6,8 +6,13 @@ const model = {
     contacts: {
         list: [],
         getContacts: thunk(async (actions) => {
-            console.log('hire')
             const data = await getContacts();
+            data.data.push({
+                id: "6e394fa2-c575-4ef4-aaca-3ed9b29959ed",
+                name: "David Ardila",
+                phone: "1312312332",
+                email: "dasdas@dasd.co"
+            });
             actions.loadContacts(data.data);
         }),
         loadContacts: action((state, payload) => {

@@ -1,14 +1,15 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { getMessages, saveMessage } from '../services/dataService';
+import { getMessages, saveMessage, offMessagesConnection, markAsReadMessages } from '../services/dataService';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFooter, IonGrid, IonRow, IonCol, IonInput, IonButton, IonButtons, IonIcon } from '@ionic/react';
 import HumanTime from 'react-human-time';
-import { arrowBackOutline } from 'ionicons/icons';
+import { arrowBackOutline, checkmarkOutline, checkmarkDoneOutline } from 'ionicons/icons';
 import './Chat.css';
 
 const Chat: React.FC = (props: any) => {
     const { match, history } = props;
+    const mainContent = React.useRef<any>();
     const [ chatId, setChatId ] = React.useState()
     const [message, setMessage] = React.useState()
     const myUser = useStoreState(state => state.user.data);
@@ -18,6 +19,9 @@ const Chat: React.FC = (props: any) => {
     const messages = useStoreState(state => state.openChat.messages);
     const loadMessages = useStoreActions((actions: any) => actions.openChat.loadMessages);
     const setUser = useStoreActions((actions: any) => actions.openChat.setUser);
+    const scrollToBottom = () => {
+        mainContent.current.scrollToBottom()
+    }
     const getContactByID = (userId: number) => {
         const user = contacts.filter((contact: any) => contact.id == userId)[0];
         if(!user) return history.goBack();
@@ -29,18 +33,22 @@ const Chat: React.FC = (props: any) => {
         setChatId(chatId ? chatId : uuidv4())
     }
     const renderMessages = () => {
+        markAsReadMessages(messages, myUser, anotherUser, chatId);
         return messages.map((data: any, index: number) => {
             return (
                 <div className={ `bubble-chat ${ data.owner == myUser.id ? 'bubble-chat--mine' : '' }` } 
                     key={`message-${index}`}>
                     <p>{data.message}</p>
-                    <span><HumanTime time={data.date} /></span>
+                    <span className="content-meta-data"> 
+                        <HumanTime time={data.date} />
+                        <IonIcon icon={ !data.read ? checkmarkOutline : checkmarkDoneOutline } />
+                    </span>
                 </div>
             );
         })
     }
-    const sendMessage = () => {
-        saveMessage({
+    const sendMessage = async() => {
+        await saveMessage({
             message,
             chatId,
             owner: myUser.id,
@@ -49,7 +57,7 @@ const Chat: React.FC = (props: any) => {
         setMessage("");
     }
     React.useEffect(() => {
-        getContactByID(parseInt(match.params.userId));
+        getContactByID(match.params.userId);
     }, []);
 
     React.useEffect(() => {
@@ -57,8 +65,25 @@ const Chat: React.FC = (props: any) => {
     }, [anotherUser]);
 
     React.useEffect(() => {
-       if(Object.values(anotherUser).length && chatId) getMessages(chatId, loadMessages);
+        async function getData() {
+            await getMessages(chatId, loadMessages)
+        }
+        if(Object.values(anotherUser).length && chatId){
+            getData();
+        }
+        return () => {
+            if(Object.values(anotherUser).length && chatId){ offMessagesConnection(chatId) }
+            loadMessages([])
+        }
     }, [chatId]);
+
+    React.useEffect(() => {
+        if(messages.length){
+            setTimeout(() => {
+                scrollToBottom();
+            }, 500)
+        }
+    }, [messages]);
 
     return (
         <IonPage className="chat-view">
@@ -72,7 +97,7 @@ const Chat: React.FC = (props: any) => {
                     <IonTitle>{ anotherUser && anotherUser.name ? anotherUser.name : 'Chat' }</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <IonContent ref={mainContent}>
                 { renderMessages() }
             </IonContent>
             <IonFooter>

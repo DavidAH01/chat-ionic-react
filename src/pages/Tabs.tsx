@@ -24,6 +24,7 @@ const Tabs: React.FC = (props: any) => {
           user['chatId'] = chats[currentValue].chatId; 
           user['lastMessage'] = chats[currentValue].lastMessage;
           user['dateLastMessage'] = chats[currentValue].dateLastMessage; 
+          user['unreadMessages'] = chats[currentValue].unreadMessages; 
           users = [...users, user]
         }
         return users

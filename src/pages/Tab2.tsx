@@ -20,7 +20,13 @@ const Tab2: React.FC = (props: any) => {
             <h2>{chat.name}</h2>
             <h3>{chat.lastMessage}</h3>
             <p><HumanTime time={chat.dateLastMessage} /></p>
+            
           </IonLabel>
+          { !!chat.unreadMessages && 
+            <IonLabel className="content-unread-messages" slot="end">
+              <span className="unread-messages" slot="end">{chat.unreadMessages}</span>
+            </IonLabel>
+          }
         </IonItem>
       )
     })

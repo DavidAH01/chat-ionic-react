@@ -20,6 +20,23 @@
     margin-top: 8px;
 }
 
+.content-unread-messages{
+    max-width: 25px;
+}
+
+.unread-messages{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #294f89;
+    color: white;
+    display: block;
+    float: right;
+    text-align: center;
+    font-size: 0.8rem;
+    padding-top: 0.3rem;
+}
+
 .bubble-chat{
     border-radius: 6px;
     margin: 10px 25px;
@@ -66,5 +83,15 @@
     display: block;
     width: 100%;
     text-align: right;
-    opacity: 0.5;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.content-meta-data{
+    font-size: 0.7rem;
+}
+
+.content-meta-data ion-icon{
+    margin-left: 5px;
+    margin-bottom: -2px;
+    color: #fff;
 }
