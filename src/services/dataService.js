@@ -96,11 +96,44 @@ const markAsReadMessages = (messages, myUser, anotherUser, chatId) => {
     );
 }
 
+const deleteMessage = (type, message, myUser, anotherUser, chatId) => {
+    const messagesList = firebase.database().ref('messages').child(chatId)
+    return messagesList.once('value', snapshot => {
+        const messages = snapshot.val() ? snapshot.val() : [];
+        if(type === 'all'){
+            console.log('hi')
+            messages[message.index].message = "El mensaje ha sido eliminado";
+            messages[message.index].deleted = [myUser.id, anotherUser.id];
+        }else if(!messages[message.index].deleted && type === 'me'){
+            messages[message.index].deleted = [myUser.id];
+        }else{
+            messages[message.index].message = "El mensaje ha sido eliminado";
+            messages[message.index].deleted.push(myUser.id);
+        }
+        messages[message.index].deletedBy = myUser.id;
+        messagesList.set(messages);
+        if(messages.length-1 === message.index && (type === 'all' ||  messages[message.index].deleted.length === 2)){
+            updateChat({
+                chatId: chatId,
+                owner: myUser.id,
+                addressee: anotherUser.id,
+                date: new Date().getTime(),
+                message: '',
+                unreadOwnMessages: messages.reduce((count, currentValue) => {
+                    if(!currentValue.read && currentValue.owner == myUser.id) return count + 1;
+                    return count;
+                }, 0)
+            })
+        }
+    });
+}
+
 export {
     getContacts,
     getChats,
     getMessages,
     offMessagesConnection,
     saveMessage,
-    markAsReadMessages
+    markAsReadMessages,
+    deleteMessage
 };

@@ -74,6 +74,14 @@
     right: -10px;
 }
 
+.bubble-chat--deleted{
+    opacity: 0.4 !important;
+}
+
+.bubble-chat--deleted p{
+    font-size: 0.8rem;
+}
+
 .bubble-chat p{
     margin-top: 0;
     margin-bottom: 5px;
@@ -94,4 +102,8 @@
     margin-left: 5px;
     margin-bottom: -2px;
     color: #fff;
+}
+
+.action-sheet-button.hidden{
+    display: none !important;
 }

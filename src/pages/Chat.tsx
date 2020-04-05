@@ -3,15 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { getMessages, saveMessage, offMessagesConnection, markAsReadMessages } from '../services/dataService';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFooter, IonGrid, IonRow, IonCol, IonInput, IonButton, IonButtons, IonIcon } from '@ionic/react';
-import HumanTime from 'react-human-time';
-import { arrowBackOutline, checkmarkOutline, checkmarkDoneOutline } from 'ionicons/icons';
+import DeleteMessage from '../components/deleteMessage';
+import ChatBubble from '../components/chatBubble';
+import { arrowBackOutline } from 'ionicons/icons';
 import './Chat.css';
 
 const Chat: React.FC = (props: any) => {
     const { match, history } = props;
     const mainContent = React.useRef<any>();
     const [ chatId, setChatId ] = React.useState()
-    const [message, setMessage] = React.useState()
+    const [ message, setMessage ] = React.useState()
+    const [ showAlertDelete, setShowAlertDelete ]: any = React.useState({ show: false })
     const myUser = useStoreState(state => state.user.data);
     const anotherUser = useStoreState(state => state.openChat.user);
     const contacts = useStoreState(state => state.contacts.list);
@@ -19,8 +21,9 @@ const Chat: React.FC = (props: any) => {
     const messages = useStoreState(state => state.openChat.messages);
     const loadMessages = useStoreActions((actions: any) => actions.openChat.loadMessages);
     const setUser = useStoreActions((actions: any) => actions.openChat.setUser);
+
     const scrollToBottom = () => {
-        mainContent.current.scrollToBottom()
+        if(mainContent && mainContent.current) mainContent.current.scrollToBottom()
     }
     const getContactByID = (userId: number) => {
         const user = contacts.filter((contact: any) => contact.id == userId)[0];
@@ -34,18 +37,12 @@ const Chat: React.FC = (props: any) => {
     }
     const renderMessages = () => {
         markAsReadMessages(messages, myUser, anotherUser, chatId);
-        return messages.map((data: any, index: number) => {
-            return (
-                <div className={ `bubble-chat ${ data.owner == myUser.id ? 'bubble-chat--mine' : '' }` } 
-                    key={`message-${index}`}>
-                    <p>{data.message}</p>
-                    <span className="content-meta-data"> 
-                        <HumanTime time={data.date} />
-                        <IonIcon icon={ !data.read ? checkmarkOutline : checkmarkDoneOutline } />
-                    </span>
-                </div>
-            );
-        })
+        const renderMessages = [...messages];
+        return renderMessages
+            .map((data: any, index: number) => {
+                data.index = index;
+                return ( <ChatBubble key={`fragment-message-${data.index}`} data={data} chatId={chatId} setShowAlertDelete={setShowAlertDelete} /> );
+            })
     }
     const sendMessage = async() => {
         await saveMessage({
@@ -98,6 +95,10 @@ const Chat: React.FC = (props: any) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent ref={mainContent}>
+                <DeleteMessage 
+                    message={showAlertDelete.message} 
+                    show={showAlertDelete.show} 
+                    close={() => setShowAlertDelete({ ...showAlertDelete, show: false })}/>
                 { renderMessages() }
             </IonContent>
             <IonFooter>

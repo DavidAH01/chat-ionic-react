@@ -28,11 +28,15 @@ const model = {
     openChat: {
         user: {},
         messages: [],
+        messageToDelete:{},
         setUser: action((state, payload) => {
             state.user = {...payload};
         }),
         loadMessages: action((state, payload) => {
             state.messages = [...payload];
+        }),
+        selectMessagesToDelete: action((state, payload) => {
+            state.messageToDelete = {...payload};
         }),
     },
     user: {
