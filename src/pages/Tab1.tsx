@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonAlert } from '@ionic/react';
+import Login from '../components/login';
 import './Tab1.css';
 
 const Tab1: React.FC = (props: any) => {
@@ -43,27 +44,7 @@ const Tab1: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-      <IonAlert
-          isOpen={openUserAlert}
-          onDidDismiss={() => setOpenUserAlert(false)}
-          header={'¿Cúal es tu nombre?'}
-          inputs={[
-            {
-              name: 'name',
-              type: 'text',
-              placeholder: 'Escríbelo aquí'
-            },
-          ]}
-          buttons={[
-            {
-              text: 'Guardar',
-              handler: (data) => {
-                createUser({ name: data.name })
-              }
-            }
-          ]}
-        />
-
+        <Login />
         {renderContacts()}
       </IonContent>
     </IonPage>

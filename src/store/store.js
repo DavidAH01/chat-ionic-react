@@ -1,11 +1,12 @@
 import { createStore, persist, action, thunk } from 'easy-peasy';
-import { getContacts, getMessages, saveMessage } from '../services/dataService';
+import { getContacts } from '../services/dataService';
 import { v4 as uuidv4 } from 'uuid';
 
 const model = {
     contacts: {
         list: [],
         getContacts: thunk(async (actions) => {
+            console.log('hire')
             const data = await getContacts();
             actions.loadContacts(data.data);
         }),

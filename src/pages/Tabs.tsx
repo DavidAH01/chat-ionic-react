@@ -32,10 +32,10 @@ const Tabs: React.FC = (props: any) => {
   }
 
   React.useEffect(() => {
-    if(!contacts.length){
+    if(Object.keys(myUser).length && !contacts.length){
       getContacts();
     }
-  }, [])
+  }, [myUser])
 
   React.useEffect(() => {
     if(contacts.length){

@@ -1,7 +1,8 @@
 import React from 'react';
+import { useStoreState } from 'easy-peasy';
 import HumanTime from 'react-human-time';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel } from '@ionic/react';
-import { useStoreState } from 'easy-peasy';
+import Login from '../components/login';
 import './Tab2.css';
 
 const Tab2: React.FC = (props: any) => {
@@ -33,6 +34,7 @@ const Tab2: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <Login />
         { renderChats() }
       </IonContent>
     </IonPage>
