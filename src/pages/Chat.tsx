@@ -38,13 +38,13 @@ const Chat: React.FC = (props: any) => {
     setChatId(chatId ? chatId : uuidv4())
   }
 
-  const renderMessages = React.useMemo(() => {
+  const renderMessages = () => {
     return [...messages]
       .map((data: any, index: number) => {
         data.index = index;
         return ( <ChatBubble key={`fragment-message-${data.index}`} data={data} chatId={chatId} setShowAlertDelete={setShowAlertDelete} /> );
       })
-  }, [messages])
+  }
 
   const sendMessage = () => {
     if(!message || !message.trim().length) return;
@@ -63,7 +63,7 @@ const Chat: React.FC = (props: any) => {
 
   React.useEffect(() => {
     markAsReadMessages(messages, myUser, anotherUser, chatId);
-  }, [messages])
+  }, [messages, myUser, anotherUser, chatId])
 
   React.useEffect(() => {
     if(Object.values(anotherUser).length) validateChatID();
