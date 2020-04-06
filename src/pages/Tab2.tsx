@@ -5,7 +5,7 @@ import ChatItem from '../components/chatItem';
 import Login from '../components/login';
 import './Tab2.css';
 
-const Tab2: React.FC = (props: any) => {
+const Tab2: React.FC = () => {
   const chats = useStoreState(state => state.chats.list);
 
   const renderChats = () => {

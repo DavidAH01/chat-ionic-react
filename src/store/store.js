@@ -8,7 +8,7 @@ const model = {
         getContacts: thunk(async (actions) => {
             const data = await getContacts();
             data.data.push({
-                id: "6e394fa2-c575-4ef4-aaca-3ed9b29959ed",
+                id: "ab86b6dc-74c2-4bc6-9670-15c1ad29185e",
                 name: "David Ardila",
                 phone: "1312312332",
                 email: "dasdas@dasd.co"

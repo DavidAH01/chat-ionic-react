@@ -19,6 +19,7 @@ const Tabs: React.FC = (props: any) => {
   const onChangeChats = (chats: any) => {
     loadChats(
       Object.keys(chats).reduce((users: any, currentValue: any) => {
+        console.log(currentValue)
         const user = contacts.filter((contact: any) => contact.id == currentValue )[0];
         if(user) { 
           user['chatId'] = chats[currentValue].chatId; 

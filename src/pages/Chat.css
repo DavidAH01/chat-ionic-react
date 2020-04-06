@@ -11,8 +11,7 @@
 }
 
 .chat-view ion-input {
-    --background: rgba(255, 255, 255, 0.1) !important;
-    --color: white !important;
+    --background: rgba(0, 0, 0, 0.05) !important;
 }
 
 .chat-view ion-col ion-button{
@@ -43,7 +42,8 @@
     margin: 10px 25px;
     max-width: 60%;
     min-width: 40%;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #2a2a2a;
+    color: white;
     padding: 5px 10px;
     position: relative;
     float: left;
@@ -63,7 +63,7 @@
 }
 
 .bubble-chat--mine{
-    background-color: rgba(66,140,255,0.5);
+    background-color: #294f89;
     float: right;
     clear: both;
 }
@@ -121,4 +121,11 @@
     padding-top: 2px;
     top: 0.3rem;
     transform: translateX(0.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+    .chat-view ion-input {
+        --background: rgba(255, 255, 255, 0.1) !important;
+        --color: white;
+    }
 }
