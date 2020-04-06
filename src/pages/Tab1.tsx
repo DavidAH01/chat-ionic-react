@@ -1,38 +1,16 @@
 import React from 'react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonAlert } from '@ionic/react';
+import { useStoreState } from 'easy-peasy';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import ContactItem from '../components/contactItem';
 import Login from '../components/login';
 import './Tab1.css';
 
-const Tab1: React.FC = (props: any) => {
-  const { history } = props;
+const Tab1: React.FC = () => {
   const contacts = useStoreState(state => state.contacts.list);
-
-  const user = useStoreState(state => state.user.data);
-  const createUser = useStoreActions((actions: any) => actions.user.create);
-
-  const [openUserAlert, setOpenUserAlert] = React.useState(false);
-
-  React.useEffect(() => {
-    if(!user || !user.id){
-      setOpenUserAlert(true)
-    }
-  }, [])
 
   const renderContacts = () => {
     return contacts.map((contact: any) => {
-      return (
-        <IonItem key={`contact-${contact.id}`} onClick={(e: any) => {
-          e.preventDefault();
-          history.push(`/chat/${contact.id}`);
-        }}>
-          <IonLabel>
-            <h2>{contact.name}</h2>
-            <h3>{contact.phone}</h3>
-            <p>{contact.website}</p>
-          </IonLabel>
-        </IonItem>
-      )
+      return <ContactItem key={`contact-${contact.id}`} contact={contact} />
     })
   }
 

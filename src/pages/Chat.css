@@ -17,7 +17,8 @@
 
 .chat-view ion-col ion-button{
     float: right;
-    margin-top: 8px;
+    margin-top: 2px;
+    width: 100% !important;
 }
 
 .content-unread-messages{
@@ -43,7 +44,7 @@
     max-width: 60%;
     min-width: 40%;
     background-color: rgba(255, 255, 255, 0.1);
-    padding: 15px 10px;
+    padding: 5px 10px;
     position: relative;
     float: left;
 }

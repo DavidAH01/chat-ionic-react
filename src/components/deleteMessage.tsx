@@ -61,4 +61,4 @@ const DeleteMessage: React.FC<CustomInputProps> = (props: any) => {
   );
 };
 
-export default React.memo((props: any) => <DeleteMessage message={props.message} show={props.show} close={props.close}/>);
+export default React.memo((props: any) => <DeleteMessage {...props}/>);

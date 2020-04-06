@@ -2,7 +2,7 @@ import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { IonAlert } from '@ionic/react';
 
-const Login: React.FC = (props: any) => {
+const Login: React.FC = () => {
   const user = useStoreState(state => state.user.data);
   const createUser = useStoreActions((actions: any) => actions.user.create);
 
@@ -15,27 +15,28 @@ const Login: React.FC = (props: any) => {
   }, [])
 
   return (
-      <IonAlert
-        isOpen={openUserAlert}
-        onDidDismiss={() => setOpenUserAlert(false)}
-        header={'¿Cúal es tu nombre?'}
-        inputs={[
-        {
-            name: 'name',
-            type: 'text',
-            placeholder: 'Escríbelo aquí'
-        },
-        ]}
-        buttons={[
-        {
-            text: 'Guardar',
-            handler: (data) => {
-            createUser({ name: data.name })
-            }
+    <IonAlert
+      isOpen={openUserAlert}
+      onDidDismiss={() => setOpenUserAlert(false)}
+      header={'¿Cúal es tu nombre?'}
+      backdropDismiss={false}
+      inputs={[
+      {
+        name: 'name',
+        type: 'text',
+        placeholder: 'Escríbelo aquí'
+      },
+      ]}
+      buttons={[
+      {
+        text: 'Guardar',
+        handler: (data) => {
+          createUser({ name: data.name })
         }
-        ]}
+      }
+      ]}
     />
   );
 };
 
-export default Login;
+export default React.memo(() => (<Login />));

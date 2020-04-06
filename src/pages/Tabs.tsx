@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Route } from 'react-router-dom';
-import { getChats } from '../services/dataService';
+import { getChats, offFBConnection } from '../services/dataService';
 import { IonTabs, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { people, chatbubbles } from 'ionicons/icons';
 
@@ -18,7 +18,6 @@ const Tabs: React.FC = (props: any) => {
   const onChangeChats = (chats: any) => {
     loadChats(
       Object.keys(chats).reduce((users: any, currentValue: any) => {
-        // eslint-disable-next-line eqeqeq
         const user = contacts.filter((contact: any) => contact.id == currentValue )[0];
         if(user) { 
           user['chatId'] = chats[currentValue].chatId; 
@@ -33,17 +32,14 @@ const Tabs: React.FC = (props: any) => {
   }
 
   React.useEffect(() => {
-    if(Object.keys(myUser).length && !contacts.length){
-      getContacts();
-    }
+    if(Object.keys(myUser).length && !contacts.length) getContacts();
   }, [myUser])
 
   React.useEffect(() => {
-    if(contacts.length){
-      const snapshot: any = getChats(myUser, onChangeChats);
-      return () => {
-        snapshot()
-      }
+    if(contacts.length) getChats(myUser, onChangeChats);
+
+    return () => {
+      if(contacts.length) offFBConnection();
     }
   }, [contacts])
 

@@ -11,30 +11,31 @@ interface CustomInputProps {
 }
 
 const ChatBubble: React.FC<CustomInputProps> = (props: any) => {
-    const { data, chatId, setShowAlertDelete } = props;
-    const myUser = useStoreState(state => state.user.data);
-    const includes = (data: any, compare: any) => {
-        return data.filter((item: any) => item == compare).length;
+  const { data, chatId, setShowAlertDelete } = props;
+  const myUser = useStoreState(state => state.user.data);
+  const includes = (data: any, compare: any) => {
+    return data.filter((item: any) => item == compare).length;
+  }
+  
+  return (
+    <React.Fragment>
+    { (!data.deleted || data.deleted.length === 2 || !includes(data.deleted, myUser.id)) && data.deletedBy != myUser.id &&
+      <div className={ 
+          `bubble-chat 
+          ${ data.owner == myUser.id ? 'bubble-chat--mine' : '' }
+          ${ data.deleted && includes(data.deleted, myUser.id) ? 'bubble-chat--deleted' : '' }` 
+        } 
+        key={`message-${data.index}`}
+        onClick={() => setShowAlertDelete({ show: true, message: { data, chatId } }) }>
+        <p>{data.message}</p>
+        <span className="content-meta-data"> 
+          <HumanTime time={data.date} />
+          <IonIcon icon={ !data.read ? checkmarkOutline : checkmarkDoneOutline } />
+        </span>
+      </div>
     }
-    return (
-        <React.Fragment>
-        { (!data.deleted || data.deleted.length === 2 || !includes(data.deleted, myUser.id)) && data.deletedBy != myUser.id &&
-            <div className={ 
-                    `bubble-chat 
-                    ${ data.owner == myUser.id ? 'bubble-chat--mine' : '' }
-                    ${ data.deleted && includes(data.deleted, myUser.id) ? 'bubble-chat--deleted' : '' }` 
-                } 
-                key={`message-${data.index}`}
-                onClick={() => setShowAlertDelete({ show: true, message: { data, chatId } }) }>
-                <p>{data.message}</p>
-                <span className="content-meta-data"> 
-                    <HumanTime time={data.date} />
-                    <IonIcon icon={ !data.read ? checkmarkOutline : checkmarkDoneOutline } />
-                </span>
-            </div>
-        }   
-        </React.Fragment>
-    )
+    </React.Fragment>
+  )
 }
 
-export default ChatBubble;
+export default React.memo((props: any) => <ChatBubble {...props} />);

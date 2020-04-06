@@ -43,7 +43,7 @@ const model = {
         data: {},
         create: action((state, payload) => {
             payload.id = uuidv4(); 
-            state.data = {...payload}
+            state.data = {...payload};
         })
     }
 };
