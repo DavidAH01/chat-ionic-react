@@ -2,7 +2,8 @@
 
 ## Setup
 - npm install
-- Config firebase's keys on src/index.tsx
+- Rename .env.example to .env
+- Config firebase's keys on .env file
 - ionic serve
 
 ## Frameworks and development libraries
