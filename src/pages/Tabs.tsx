@@ -2,7 +2,7 @@ import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Route } from 'react-router-dom';
 import { getChats, offFBConnection } from '../services/dataService';
-import { IonTabs, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
+import { IonTabs, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge } from '@ionic/react';
 import { people, chatbubbles } from 'ionicons/icons';
 
 import Tab1 from './Tab1';
@@ -14,6 +14,7 @@ const Tabs: React.FC = (props: any) => {
   const contacts = useStoreState(state => state.contacts.list);
   const getContacts = useStoreActions((actions: any) => actions.contacts.getContacts);
   const loadChats = useStoreActions((actions: any) => actions.chats.loadChats);
+  const unreadMessages = useStoreState(state => state.chats.unreadMessages);
 
   const onChangeChats = (chats: any) => {
     loadChats(
@@ -57,7 +58,10 @@ const Tabs: React.FC = (props: any) => {
             </IonTabButton>
             <IonTabButton tab="tab2" href="/tabs/tab2">
               <IonIcon icon={chatbubbles} />
-              <IonLabel>Chats</IonLabel>
+              <IonLabel>
+                Chats
+              </IonLabel>
+              { !!unreadMessages && <span className="unread-messages-bridge">{unreadMessages}</span>}
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

@@ -26,4 +26,4 @@ const ChatItem: React.FC<CustomInputProps> = (props: any) => {
   );
 };
 
-export default React.memo((props: any) => (<ChatItem {...props} />));
+export default ChatItem;

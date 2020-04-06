@@ -1,4 +1,4 @@
-import { createStore, persist, action, thunk } from 'easy-peasy';
+import { createStore, persist, action, thunk, computed } from 'easy-peasy';
 import { getContacts } from '../services/dataService';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +21,12 @@ const model = {
     },
     chats: {
         list: [],
+        unreadMessages: computed(state => {
+            if(!state.list.length) return 0;
+            return state.list.reduce((count, chat) => {
+                return count + chat.unreadMessages
+            }, 0)
+        }),
         loadChats: action((state, payload) => {
             state.list = [...payload];
         })

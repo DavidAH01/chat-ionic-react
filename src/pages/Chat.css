@@ -108,3 +108,17 @@
 .action-sheet-button.hidden{
     display: none !important;
 }
+
+.unread-messages-bridge{
+    background-color: var(--ion-color-danger);
+    border-radius: 100%;
+    width: 17px;
+    height: 17px;
+    text-align: center;
+    color: white;
+    font-size: 0.65rem;
+    position: absolute;
+    padding-top: 2px;
+    top: 0.3rem;
+    transform: translateX(0.5rem);
+}

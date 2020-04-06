@@ -86,7 +86,7 @@ const Chat: React.FC = (props: any) => {
     if(messages.length){
       setTimeout(() => {
         scrollToBottom();
-      }, 500)
+      }, 300)
     }
   }, [messages]);
 
@@ -107,13 +107,16 @@ const Chat: React.FC = (props: any) => {
           message={showAlertDelete.message} 
           show={showAlertDelete.show} 
           close={() => setShowAlertDelete({ ...showAlertDelete, show: false })}/>
-        { renderMessages() }
+        { !!messages.length && renderMessages() }
       </IonContent>
       <IonFooter>
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonInput value={message} placeholder="Escríbe aquí" onIonChange={(e: any) => setMessage(e.detail.value)}></IonInput>
+              <IonInput placeholder="Escríbe aquí" 
+                        value={message}  
+                        onIonChange={(e: any) => setMessage(e.detail.value)}
+                        onKeyPress={(e) => { if(e.key === 'Enter') sendMessage(); }}></IonInput>
             </IonCol>
             <IonCol size="2">
               <IonButton onClick={sendMessage}>

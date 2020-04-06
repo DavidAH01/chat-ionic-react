@@ -23,7 +23,7 @@ const Tab2: React.FC = (props: any) => {
       </IonHeader>
       <IonContent>
         <Login />
-        { renderChats() }
+        { !!chats.length && renderChats() }
       </IonContent>
     </IonPage>
   );
