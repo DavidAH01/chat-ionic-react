@@ -10,7 +10,7 @@ const ChatItem: React.FC<CustomInputProps> = (props: any) => {
   const { chat } = props;
 
   return (
-    <IonItem routerLink={`/chat/${chat.id}`}>
+    <IonItem routerLink={`/main/chat/${chat.id}`}>
       <IonLabel>
         <h2>{chat.name}</h2>
         <h3>{chat.lastMessage}</h3>

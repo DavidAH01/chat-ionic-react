@@ -2,7 +2,7 @@ import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Route } from 'react-router-dom';
 import { getChats, offFBConnection } from '../services/dataService';
-import { IonTabs, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge } from '@ionic/react';
+import { IonTabs, IonRouterOutlet, IonPage, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { people, chatbubbles } from 'ionicons/icons';
 
 import Tab1 from './Tab1';
@@ -19,10 +19,10 @@ const Tabs: React.FC = (props: any) => {
   const onChangeChats = (chats: any) => {
     loadChats(
       Object.keys(chats).reduce((users: any, currentValue: any) => {
-        console.log(currentValue)
         const user = contacts.filter((contact: any) => contact.id == currentValue )[0];
         if(user) { 
           user['chatId'] = chats[currentValue].chatId; 
+          user['receiverOnesignalId'] = chats[currentValue].onesignalId; 
           user['lastMessage'] = chats[currentValue].lastMessage;
           user['dateLastMessage'] = chats[currentValue].dateLastMessage; 
           user['unreadMessages'] = chats[currentValue].unreadMessages; 
@@ -49,15 +49,15 @@ const Tabs: React.FC = (props: any) => {
     <IonPage>
       <IonTabs>
           <IonRouterOutlet>
-            <Route path={`${match.url}/tab1`}  component={Tab1} exact={true} />
-            <Route path={`${match.url}/tab2`}  component={Tab2} exact={true} />
+            <Route path={`${match.url}/tab1`} component={Tab1} exact={true} />
+            <Route path={`${match.url}/tab2`} component={Tab2} exact={true} />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="tab1" href="/tabs/tab1">
+            <IonTabButton tab="tab1" href={`${match.url}/tab1`}>
               <IonIcon icon={people} />
               <IonLabel>Contactos</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tab2" href="/tabs/tab2">
+            <IonTabButton tab="tab2" href={`${match.url}/tab2`}>
               <IonIcon icon={chatbubbles} />
               <IonLabel>
                 Chats

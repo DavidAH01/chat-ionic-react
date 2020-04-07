@@ -1,19 +1,31 @@
 import { createStore, persist, action, thunk, computed } from 'easy-peasy';
 import { getContacts } from '../services/dataService';
+import { getUserId } from '../services/oneSignalService';
 import { v4 as uuidv4 } from 'uuid';
 
 const model = {
+    navigation:{
+        history: {},
+        setNavigation: action((state, payload) => {
+            state.history = {...payload};
+        })
+    },
     contacts: {
         list: [],
         getContacts: thunk(async (actions) => {
             const data = await getContacts();
             data.data.push({
-                id: "ab86b6dc-74c2-4bc6-9670-15c1ad29185e",
+                id: "7d20ad9d-db4e-42d0-84c5-4ae2430e4b58",
                 name: "David Ardila",
                 phone: "1312312332",
                 email: "dasdas@dasd.co"
             });
-            actions.loadContacts(data.data);
+            actions.loadContacts(
+                data.data.map(contact => {
+                    contact.onesignalId = `9c46ad13-95bc-49fc-b7a9-2d6c95ac4d2c`
+                    return contact;
+                })
+            );
         }),
         loadContacts: action((state, payload) => {
             state.list = [...payload];
@@ -47,8 +59,12 @@ const model = {
     },
     user: {
         data: {},
-        create: action((state, payload) => {
+        create: thunk(async(actions, payload) => {
             payload.id = uuidv4(); 
+            payload.onesignalId = await getUserId();
+            actions.saveUser({...payload});
+        }),
+        saveUser: action(async(state, payload) => {
             state.data = {...payload};
         })
     }

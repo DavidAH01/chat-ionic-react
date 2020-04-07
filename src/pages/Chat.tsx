@@ -2,6 +2,7 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { getMessages, saveMessage, offFBConnection, markAsReadMessages } from '../services/dataService';
+import { sendNotification } from '../services/oneSignalService';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFooter, IonGrid, IonRow, IonCol, IonInput, IonButton, IonButtons, IonIcon } from '@ionic/react';
 import DeleteMessage from '../components/deleteMessage';
 import ChatBubble from '../components/chatBubble';
@@ -25,7 +26,7 @@ const Chat: React.FC = (props: any) => {
   const scrollToBottom = () => {
     if(mainContent && mainContent.current) mainContent.current.scrollToBottom()
   }
-  
+
   const getContactByID = (userId: number) => {
     const user = contacts.filter((contact: any) => contact.id == userId)[0];
     if(!user) return history.goBack();
@@ -54,12 +55,14 @@ const Chat: React.FC = (props: any) => {
       owner: myUser.id,
       addressee: anotherUser.id
     })
+    sendNotification(message, anotherUser.onesignalId, myUser);
     setMessage("");
   }
 
   React.useEffect(() => {
+    loadMessages([])
     getContactByID(match.params.userId);
-  }, []);
+  }, [match.params.userId]);
 
   React.useEffect(() => {
     markAsReadMessages(messages, myUser, anotherUser, chatId);

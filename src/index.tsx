@@ -4,12 +4,16 @@ import App from './App';
 import * as firebase from 'firebase'
 import * as serviceWorker from './serviceWorker';
 
+declare global {
+  interface Window { plugins: any; }
+}
+
 const config = {
-    apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASEURL,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
-    appId: process.env.REACT_APP_FIREBASE_APPID
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASEURL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  appId: process.env.REACT_APP_FIREBASE_APPID
 }
 firebase.initializeApp(config)
 
