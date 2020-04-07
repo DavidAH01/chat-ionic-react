@@ -1,8 +1,0 @@
-{
-  "appId": "io.ionic.starter",
-  "appName": "react-chat",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "cordova": {}
-}
