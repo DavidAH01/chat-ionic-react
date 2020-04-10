@@ -12,3 +12,8 @@
 - Axios
 - Firebase
 - Easy peasy (State manager)
+
+## Features
+- One to one chat
+- Delete messages
+- Push notifications (Onesignal)
